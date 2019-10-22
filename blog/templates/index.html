@@ -1,0 +1,14 @@
+{% extends "basic_layout.html" %}
+
+{% block content %}
+<h1>Blog Home</h1>
+<p>Welcome to Blogged a website developed using <em>Django 2</em>!</p>
+<h3>The Blog has the following record counts:</h3>
+<ul>
+  <li><strong>Blogs:</strong> {{ num_blogs }}</li>
+  <li><strong>Bloggers:</strong> {{ num_bloggers }}</li>
+  <li><strong>Total Comments:</strong> {{ num_comments }}</li>
+</ul>
+
+<!-- <p>You have visited this page {{ num_visits }}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p> -->
+{% endblock %}

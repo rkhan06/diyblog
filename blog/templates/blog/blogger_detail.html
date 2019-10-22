@@ -1,0 +1,22 @@
+{% extends "basic_layout.html"%}
+
+{% block content %}
+{% if blogger %}
+  <h2>{{ blogger.user }}</h2>
+  <p>{{ blogger.bio }}</p>
+  <hr>
+
+  {% if blogs %}
+  <ul>
+    {% for blog in blogs %}
+      <li><a href="{{ blog.get_absolute_url }}">{{blog.title}}</a></li>
+    {% endfor %}
+  </ul>
+
+    {% else %}
+    <p>This user has not posted any blogs yet :( </p>
+
+  {% endif %}
+{% endif %}
+
+{% endblock%}

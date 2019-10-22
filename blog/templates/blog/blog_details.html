@@ -1,0 +1,35 @@
+{% extends "basic_layout.html" %}
+
+{% block content %}
+{% if blog %}
+<h1>{{blog.title}}</h1>
+
+<p>By {{ blog.author }} on <strong>{{ blog.post_date }}</strong></p>
+<hr>
+<p>{{blog.blog_post}}</p>
+
+{% if comments %}
+<h4>Comments:</h4>
+{% for comment in comments %}
+<hr>
+<p><strong>{{ comment.commenter }}</strong> : {{ comment.comment_text }} - {{ comment.post_date }}</p>
+{% endfor %}
+{% else %}
+<hr>
+
+<h5>This blog doesnt have any comments yet :( </h5>
+{% endif %}
+<hr>
+  {% if user.is_authenticated %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {% include "../basic_form.html" with form=comment_form %}
+    <input type="submit" class="btn btn-primary" value="Post Comment">
+  </form>
+  {% else %}
+    <p>login to post comments</p>
+  {% endif %}
+
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'basic_layout.html' %}
+
+{% block content %}
+<h1>Bloggers List</h1>
+ {% if bloggers %}
+  <ul>
+  {% for blogger in bloggers %}
+    <li>
+      <a href="{{ blogger.get_absolute_url }}">{{ blogger.user }}</a>
+    </li>
+
+{% endfor %}
+</ul>
+{% else %}
+<p>No Bloggers found </p>
+
+{% endif %}
+{% endblock %}
