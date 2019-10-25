@@ -13,6 +13,14 @@
 {% for comment in comments %}
 <hr>
 <p><strong>{{ comment.commenter }}</strong> : {{ comment.comment_text }} - {{ comment.post_date }}</p>
+{% if user == comment.commenter %}
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="comment_id" value="{{ comment.id }}">
+  <input type="submit" name="delete" value="delete">
+</form>
+{% endif %}
+
 {% endfor %}
 {% else %}
 <hr>

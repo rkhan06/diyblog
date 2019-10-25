@@ -23,3 +23,7 @@ class CommentForm(ModelForm):
         widgets = {
             'comment_text': Textarea(attrs={'cols': 7, 'rows': 2}),
         }
+
+
+class deleteComment(forms.Form):
+    delete = forms.CharField()

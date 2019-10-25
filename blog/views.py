@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from blog.models import Author, Blog, Comment
 from django.http import HttpResponseRedirect
-from blog.forms import CommentForm
+from blog.forms import CommentForm, deleteComment
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
@@ -33,15 +33,21 @@ def blogDetail(request, pk):
     comments = Comment.objects.filter(blog=blog)
 
     if request.method == 'POST':
-        # form = blogComment(request.POST)
-        form = CommentForm(request.POST)
 
-        if form.is_valid():
+        comment_form = CommentForm(request.POST)
+        delete_comment_form = deleteComment(request.POST)
+        if comment_form.is_valid():
             comment = Comment()
-            comment.comment_text = form.save(commit=False)
+            comment.comment_text = comment_form.save(commit=False)
             comment.blog = blog
             comment.commenter = request.user
             comment.save()
+            return HttpResponseRedirect(reverse('blog:blog-detail', kwargs={'pk': pk}))
+
+        if delete_comment_form.is_valid():
+            comment_id = request.POST['comment_id']
+            comment = get_object_or_404(Comment, pk=comment_id)
+            comment.delete()
             return HttpResponseRedirect(reverse('blog:blog-detail', kwargs={'pk': pk}))
     else:
         comment_form = CommentForm()
