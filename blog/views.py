@@ -29,18 +29,19 @@ def blogList(request):
 
 
 def blogDetail(request, pk):
+
     blog = get_object_or_404(Blog, pk=pk)
-    comments = Comment.objects.filter(blog=blog)
 
     if request.method == 'POST':
-
         comment_form = CommentForm(request.POST)
         delete_comment_form = deleteComment(request.POST)
+
         if comment_form.is_valid():
+            author = get_object_or_404(Author, pk=request.user.id)
             comment = Comment()
             comment.comment_text = comment_form.save(commit=False)
             comment.blog = blog
-            comment.commenter = request.user
+            comment.commenter = author
             comment.save()
             return HttpResponseRedirect(reverse('blog:blog-detail', kwargs={'pk': pk}))
 
@@ -50,12 +51,12 @@ def blogDetail(request, pk):
             comment.delete()
             return HttpResponseRedirect(reverse('blog:blog-detail', kwargs={'pk': pk}))
     else:
+        comments = Comment.objects.filter(blog=blog)
         comment_form = CommentForm()
-
     context = {
         'blog': blog,
         'comments': comments,
-        'comment_form': comment_form
+        'comment_form': comment_form,
     }
     return render(request, 'blog/blog_details.html', context=context)
 
